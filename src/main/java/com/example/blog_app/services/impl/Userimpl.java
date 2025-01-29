@@ -4,6 +4,7 @@ import com.example.blog_app.entities.*;
 import com.example.blog_app.payloads.Userdto;
 import com.example.blog_app.repositories.UserRepo;
 import com.example.blog_app.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.blog_app.exceptions.ResourceNotFoundException;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
@@ -15,6 +16,9 @@ import java.util.List;
 public class Userimpl implements UserService {
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public Userdto createUser(Userdto userdto) {
@@ -54,22 +58,24 @@ public class Userimpl implements UserService {
     }
 
     private User dtotouser(Userdto userdto){
-        User user=new User();
-        user.setId(userdto.getId());
-        user.setAbout(userdto.getAbout());
-        user.setEmail(userdto.getEmail());
-        user.setPassword(userdto.getPassword());
-        user.setName(userdto.getName());
-        return user;
+//        User user=new User();
+//        user.setId(userdto.getId());
+//        user.setAbout(userdto.getAbout());
+//        user.setEmail(userdto.getEmail());
+//        user.setPassword(userdto.getPassword());
+//        user.setName(userdto.getName());
+        return modelMapper.map(userdto,User.class);
+//        return user;
     }
 
     public Userdto usertodto(User user){
-        Userdto userdto=new Userdto();
-        userdto.setId(user.getId());
-        userdto.setAbout(user.getAbout());
-        userdto.setEmail(user.getEmail());
-        userdto.setPassword(user.getPassword());
-        userdto.setName(user.getName());
-        return userdto;
+//        Userdto userdto=new Userdto();
+//        userdto.setId(user.getId());
+//        userdto.setAbout(user.getAbout());
+//        userdto.setEmail(user.getEmail());
+//        userdto.setPassword(user.getPassword());
+//        userdto.setName(user.getName());
+//        return userdto;
+        return modelMapper.map(user,Userdto.class);
     }
 }
