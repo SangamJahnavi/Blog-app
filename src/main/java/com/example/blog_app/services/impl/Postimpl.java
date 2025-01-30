@@ -60,21 +60,31 @@ public class Postimpl implements PostService {
 
     @Override
     public List<Postdto> getAllPosts() {
-        return List.of();
+        List<Post> posts=this.postRepo.findAll();
+        List<Postdto> postdtos=posts.stream().map(post -> this.modelMapper.map(post,Postdto.class)).toList();
+        return postdtos;
     }
 
     @Override
     public Postdto getPostById(Integer postId) {
-        return null;
+        Post post=this.postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("post","id",postId));
+        Postdto postdto=this.modelMapper.map(post,Postdto.class);
+        return postdto;
     }
 
     @Override
-    public List<Postdto> getPostsbyCategory(Category category) {
-        return List.of();
+    public List<Postdto> getPostsbyCategory(Integer categoryId) {
+        Category category=this.categoryRepo.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category","id",categoryId));
+        List<Post> posts=this.postRepo.findByCategory(category);
+        List<Postdto> postdtos=posts.stream().map(post -> this.modelMapper.map(post,Postdto.class)).toList();
+        return postdtos;
     }
 
     @Override
-    public List<Postdto> getPostbyUser(User user) {
-        return List.of();
+    public List<Postdto> getPostbyUser(Integer userId) {
+        User user=this.userRepo.findById(userId).orElseThrow(()->new ResourceNotFoundException("user","id",userId));
+        List<Post> posts=this.postRepo.findByUser(user);
+        List<Postdto> postdtos=posts.stream().map(post -> this.modelMapper.map(post,Postdto.class)).toList();
+        return postdtos;
     }
 }

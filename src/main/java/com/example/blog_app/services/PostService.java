@@ -14,7 +14,7 @@ public interface PostService {
     public void deletePost(Integer postId);
     public List<Postdto> getAllPosts();
     public Postdto getPostById(Integer postId);
-    public  List<Postdto>  getPostsbyCategory(Category category);
-    public List<Postdto> getPostbyUser(User user);
+    public  List<Postdto>  getPostsbyCategory(Integer categoryId);
+    public List<Postdto> getPostbyUser(Integer userId);
 
 }
