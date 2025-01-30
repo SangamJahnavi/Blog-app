@@ -2,14 +2,18 @@ package com.example.blog_app.entities;
 
 
 import jakarta.persistence.*;
-import org.modelmapper.internal.bytebuddy.build.HashCodeAndEqualsPlugin;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 
 @Entity
 @Table(name = "Posts")
-public class Posts {
+@Getter
+@Setter
+@NoArgsConstructor
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

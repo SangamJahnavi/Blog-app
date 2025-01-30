@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CategoryDto {
 
-    @NotNull
+
     private Integer id;
 
     private Integer Category_id;

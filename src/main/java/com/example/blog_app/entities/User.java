@@ -26,7 +26,7 @@ public class User {
     private String about;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Posts> posts=new ArrayList<>();
+    private List<Post> posts=new ArrayList<>();
 
 
 }
