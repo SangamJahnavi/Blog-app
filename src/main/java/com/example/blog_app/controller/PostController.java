@@ -1,5 +1,6 @@
 package com.example.blog_app.controller;
 
+import com.example.blog_app.payloads.ApiResponse;
 import com.example.blog_app.payloads.Postdto;
 import com.example.blog_app.services.PostService;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -45,6 +46,18 @@ public class PostController {
     public ResponseEntity<List<Postdto>> getAllPosts(){
         List<Postdto> postdtos=this.postService.getAllPosts();
         return ResponseEntity.ok(postdtos);
+    }
+
+    @PutMapping("/posts/{postId}")
+    public ResponseEntity<Postdto> updatePost(@RequestBody Postdto postdto,@PathVariable Integer postId){
+        Postdto postdto1=this.postService.updatePost(postdto,postId);
+        return ResponseEntity.ok(postdto1);
+    }
+
+    @DeleteMapping("/posts/{postId}")
+    public ResponseEntity<ApiResponse> deletePost(@PathVariable Integer postId){
+        this.postService.deletePost(postId);
+        return new ResponseEntity<ApiResponse>(new ApiResponse("post deleted susccessfully",true),HttpStatus.OK);
     }
 
 
