@@ -6,14 +6,19 @@ import com.example.blog_app.payloads.Postdto;
 import com.example.blog_app.services.FileService;
 import com.example.blog_app.services.PostService;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import static com.example.blog_app.config.Constants.*;
@@ -94,6 +99,14 @@ public class PostController {
         postdto.setImageName(uploadimage);
         Postdto updatedpost =this.postService.updatePost(postdto,postId);
         return ResponseEntity.ok(updatedpost);
+    }
+
+//    To serve the image
+    @GetMapping("/posts/images/{imageName}")
+    public void serve(@PathVariable String imageName, HttpServletResponse response) throws IOException {
+        InputStream resource=this.fileService.serveImage(path,imageName);
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        StreamUtils.copy(resource,response.getOutputStream());
     }
 
 }

@@ -4,8 +4,7 @@ import com.example.blog_app.services.FileService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -39,5 +38,12 @@ public class FileServiceimpl implements FileService {
         Files.copy(file.getInputStream(), Paths.get(filepath));
 
         return  randomname;
+    }
+
+    @Override
+    public InputStream serveImage(String path, String filename) throws FileNotFoundException {
+        String filepath=path+File.separator+filename;
+        InputStream f=new FileInputStream(filepath);
+        return f;
     }
 }
