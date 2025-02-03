@@ -3,13 +3,17 @@ package com.example.blog_app.controller;
 import com.example.blog_app.payloads.ApiResponse;
 import com.example.blog_app.payloads.PostResponse;
 import com.example.blog_app.payloads.Postdto;
+import com.example.blog_app.services.FileService;
 import com.example.blog_app.services.PostService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.example.blog_app.config.Constants.*;
@@ -18,8 +22,15 @@ import static com.example.blog_app.config.Constants.*;
 @RequestMapping("/api")
 public class PostController {
 
+
     @Autowired
     public PostService postService;
+
+    @Autowired
+    public FileService fileService;
+
+    @Value("${project.image}")
+    String path;
 
     @PostMapping("/userId/{userId}/CategoryId/{categoryId}/posts")
     public ResponseEntity<Postdto> createPost(@RequestBody Postdto postdto,@PathVariable Integer userId, @PathVariable   Integer categoryId){
@@ -71,6 +82,18 @@ public class PostController {
     public ResponseEntity<List<Postdto>> search(@PathVariable String searchKeyword){
         List<Postdto> postdtos =this.postService.searchPosts(searchKeyword);
         return ResponseEntity.ok(postdtos);
+    }
+
+//    File Services
+
+//    To upload the post image
+    @PostMapping("/posts/upload/images/{postId}")
+    public ResponseEntity<Postdto> uploadImage(@RequestParam("image")MultipartFile image, @PathVariable Integer postId ) throws IOException {
+        String uploadimage=this.fileService.uploadImage(path,image);
+        Postdto postdto=this.postService.getPostById(postId);
+        postdto.setImageName(uploadimage);
+        Postdto updatedpost =this.postService.updatePost(postdto,postId);
+        return ResponseEntity.ok(updatedpost);
     }
 
 }
