@@ -120,4 +120,11 @@ public class Postimpl implements PostService {
         List<Postdto> postdtos=posts.stream().map(post -> this.modelMapper.map(post,Postdto.class)).toList();
         return postdtos;
     }
+
+    @Override
+    public List<Postdto> searchPosts(String keyword) {
+        List<Post> posts=this.postRepo.findByPostTitleContaining(keyword);
+        List<Postdto> postdtos=posts.stream().map(post -> this.modelMapper.map(post,Postdto.class)).toList();
+        return postdtos;
+    }
 }
