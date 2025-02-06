@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="Users")
@@ -30,6 +32,11 @@ public class User {
 
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
     private List<Comment> comments=new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role" , joinColumns = @JoinColumn(name = "user", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "role",referencedColumnName = "id"))
+    private Set<Role> role =new HashSet<>();
 
 
 
